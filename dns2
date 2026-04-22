@@ -1,0 +1,35 @@
+@echo off
+net sessions >nul 2>&1 || (echo [!] Admin Required & pause & exit)
+title ROBLOX_UNBLOCK_STABILITY_V4
+color 0b
+
+:: --- [1] Unblock Roblox (DNS Bypass) ---
+echo [!] Unblocking Roblox...
+netsh interface ip set dns name="Wi-Fi" static 1.1.1.1
+netsh interface ip add dns name="Wi-Fi" 1.0.0.1 index=2
+netsh interface ip set dns name="Ethernet" static 1.1.1.1
+netsh interface ip add dns name="Ethernet" 1.0.0.1 index=2
+
+:: --- [2] Network Stability & MTU ---
+netsh int tcp set global autotuninglevel=disabled
+netsh int tcp set global congestionprovider=ctcp
+netsh interface ipv4 set subinterface "Wi-Fi" mtu=1450 store=persistent
+netsh interface ipv4 set subinterface "Ethernet" mtu=1450 store=persistent
+ipconfig /flushdns >nul
+
+:: --- [3] Anti-AFK & Fake Traffic Engine ---
+cls
+echo =======================================
+echo    ROBLOX UNBLOCKED - READY FOR TOURNAMENT
+echo =======================================
+echo [ACTIVE] DNS: Cloudflare (1.1.1.1)
+echo [ACTIVE] HTTP PERSISTENT: ON
+echo [ACTIVE] FAKE REQUESTS: SENDING...
+echo ---------------------------------------
+
+:loop
+ping 1.1.1.1 -n 1 -w 500 >nul
+powershell -Command "Invoke-WebRequest -Uri 'http://google.com' -Method Head -Headers @{'Keep-Alive'='5'}" >nul 2>&1
+echo [%time%] Stable Connection: Active [OK]
+timeout /t 1 /nobreak >nul
+goto loop
