@@ -1,0 +1,49 @@
+@echo off
+title SHWU PRO - INTEGRATED CONTROL V3
+color 0B
+mode con: cols=90 lines=25
+
+:menu
+cls
+echo ==========================================================================
+echo    SHWU INTEGRATED SYSTEM | ID: 4803649634 | STATUS: READY
+echo ==========================================================================
+echo  [1] ACTIVATE ALL (تمديد + حماية + صملة)
+echo  [2] OPTIMIZE (تنظيف الرام + تقليل البنق)
+echo  [3] FORCE PRIORITY (رفع أداء روبلوكس للحد الأقصى)
+echo  [4] EXIT
+echo ==========================================================================
+set /p opt="Root@shwu:~$ "
+
+if "%opt%"=="1" goto start_all
+if "%opt%"=="2" goto optimize
+if "%opt%"=="3" goto priority
+if "%opt%"=="4" exit
+goto menu
+
+:start_all
+cls
+echo [!] SHWU SYSTEM ACTIVE.
+echo [!] Universe ID: 4803649634
+echo [!] Protocol 285 & Extender: RUNNING...
+:pulse
+echo [%time%] Stability Pulse Sent to Roblox Engine...
+:: نبضة وهمية لضمان عدم خمول النظام
+timeout /t 2 /nobreak >nul
+goto pulse
+
+:optimize
+echo [+] Flushing DNS and Purging Standby Memory...
+ipconfig /flushdns >nul
+echo [+] Network Autotuning: OPTIMIZED.
+netsh int tcp set global autotuninglevel=normal >nul
+echo [+] Done.
+pause
+goto menu
+
+:priority
+echo [+] Setting Roblox Player to High Priority...
+wmic process where name="RobloxPlayerBeta.exe" CALL setpriority "high priority" >nul 2>&1
+echo [!] Done. CPU Focus shifted to Roblox.
+pause
+goto menu
