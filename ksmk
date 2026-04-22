@@ -1,0 +1,26 @@
+@echo off
+title SHWU MASTER SYSTEM v6.0
+color 0A
+mode con: cols=90 lines=25
+echo [*] INITIALIZING ALL PROTOCOLS...
+timeout /t 2 >nul
+cls
+echo ========================================================
+echo    SHWU MASTER SYSTEM | UNIVERSE: 4803649634 | ACTIVE
+echo ========================================================
+:master_loop
+set /a p_rand=%random% %% 5
+set /a r_rand=%random% %% 4
+if %p_rand%==0 set "p=Extender"
+if %p_rand%==1 set "p=BackupSync"
+if %p_rand%==2 set "p=UrgentPulse"
+if %p_rand%==3 set "p=NetworkLock"
+if %p_rand%==4 set "p=DataFlow"
+if %r_rand%==0 set "r=ServerSideBulkPurchaseEvent"
+if %r_rand%==1 set "r=GlobalDataRemote"
+if %r_rand%==2 set "r=PurchaseChallenge"
+if %r_rand%==3 set "r=InternalSync"
+echo [%time%] Sending via: %p% ^| Remote: %r% ^| SUCCESS
+timeout /t 2 /nobreak >nul
+goto master_loop
+pause
