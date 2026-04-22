@@ -1,0 +1,68 @@
+-- إنشاء القائمة (GUI)
+local ScreenGui = Instance.new("ScreenGui")
+local MainFrame = Instance.new("Frame")
+local Title = Instance.new("TextLabel")
+local AntiAFKBtn = Instance.new("TextButton")
+local CleanMemBtn = Instance.new("TextButton")
+local UICorner = Instance.new("UICorner")
+
+-- إعدادات الشاشة
+ScreenGui.Parent = game.CoreGui
+ScreenGui.Name = "StabilityHub"
+
+-- إعدادات الإطار الرئيسي (قابل للتحريك)
+MainFrame.Name = "MainFrame"
+MainFrame.Parent = ScreenGui
+MainFrame.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
+MainFrame.Position = UDim2.new(0.5, -100, 0.5, -75)
+MainFrame.Size = UDim2.new(0, 200, 0, 150)
+MainFrame.Active = true
+MainFrame.Draggable = true -- تفعيل خاصية التحريك
+
+Instance.new("UICorner", MainFrame).CornerRadius = UDim.new(0, 10)
+
+-- العنوان
+Title.Parent = MainFrame
+Title.Size = UDim2.new(1, 0, 0, 40)
+Title.Text = "صمود (Stability)"
+Title.TextColor3 = Color3.fromRGB(255, 255, 255)
+Title.BackgroundTransparency = 1
+Title.TextSize = 18
+
+-- زر Anti-AFK
+AntiAFKBtn.Parent = MainFrame
+AntiAFKBtn.Position = UDim2.new(0.1, 0, 0.35, 0)
+AntiAFKBtn.Size = UDim2.new(0.8, 0, 0, 35)
+AntiAFKBtn.BackgroundColor3 = Color3.fromRGB(50, 150, 50)
+AntiAFKBtn.Text = "تفعيل Anti-AFK"
+AntiAFKBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+
+-- زر تنظيف الذاكرة (لحل الـ Error)
+CleanMemBtn.Parent = MainFrame
+CleanMemBtn.Position = UDim2.new(0.1, 0, 0.65, 0)
+CleanMemBtn.Size = UDim2.new(0.8, 0, 0, 35)
+CleanMemBtn.BackgroundColor3 = Color3.fromRGB(150, 50, 50)
+CleanMemBtn.Text = "تنظيف الرام (Safe Mode)"
+CleanMemBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+
+-- برمجة الأزرار
+AntiAFKBtn.MouseButton1Click:Connect(function()
+    local vu = game:GetService("VirtualUser")
+    game:GetService("Players").LocalPlayer.Idled:Connect(function()
+        vu:Button2Down(Vector2.new(0,0), workspace.CurrentCamera.CFrame)
+        wait(1)
+        vu:Button2Up(Vector2.new(0,0), workspace.CurrentCamera.CFrame)
+    end)
+    AntiAFKBtn.Text = "تم التفعيل ✅"
+    AntiAFKBtn.BackgroundColor3 = Color3.fromRGB(100, 100, 100)
+end)
+
+CleanMemBtn.MouseButton1Click:Connect(function()
+    -- حذف التأثيرات التي تسبب ثقل مع الوقت وتؤدي لـ Error
+    for _, v in pairs(game:GetDescendants()) do
+        if v:IsA("ParticleEmitter") or v:IsA("Trail") or v:IsA("Smoke") or v:IsA("Sparkles") then
+            v.Enabled = false
+        end
+    end
+    CleanMemBtn.Text = "الوضع الآمن يعمل ✅"
+end)
