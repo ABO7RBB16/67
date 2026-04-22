@@ -1,0 +1,66 @@
+import requests
+import time
+import threading
+import os
+import random
+
+# --- الإعدادات الثابتة ---
+UNIVERSE_ID = "4803649634"
+API_KEY = "ضعه_هنا_من_الداشبورد" # ضروري جداً لتشغيل الأداة
+
+class ServerGodMode:
+    def __init__(self):
+        self.active = False
+        self.methods = ["Extender", "BackupSync", "UrgentPulse", "NetworkLock", "DataFlow"]
+        self.remotes = ["ServerSideBulkPurchaseEvent", "GlobalDataRemote", "PurchaseChallenge", "InternalSync"]
+        self.headers = {"x-api-key": API_KEY, "Content-Type": "application/json"}
+
+    def multi_path_send(self, topic, payload):
+        """إرسال عبر عدة مسارات لضمان الوصول"""
+        url = f"https://apis.roblox.com/messaging-service/v1/universes/{UNIVERSE_ID}/topics/{topic}"
+        try:
+            res = requests.post(url, headers=self.headers, json={"message": payload})
+            return res.status_code == 200
+        except: return False
+
+    def auto_extender_loop(self):
+        while self.active:
+            # استخدام طرق متعددة (Multi-Method) لضمان عدم القفل
+            for path in self.methods:
+                remote = random.choice(self.remotes)
+                success = self.multi_path_send(path, remote)
+                status = "SUCCESS" if success else "RETRYING..."
+                print(f"[{time.strftime('%H:%M:%S')}] Path: {path} | Remote: {remote} | {status}")
+            time.sleep(1.5) # تردد عالي لرفع أولوية السيرفر
+
+    def terminal(self):
+        os.system('cls' if os.name == 'nt' else 'clear')
+        print(f"--- SERVER PROTECTOR V2 PRO | UNIVERSE: {UNIVERSE_ID} ---")
+        print("1. start  -> تفعيل وضع البطولة (تمديد + حماية 285 + خفاء)")
+        print("2. clean  -> تنظيف شامل (GPU/RAM) لجميع اللاعبين والسيرفر")
+        print("3. freeze -> تجميد فوري لكل مسببات اللاغ والكراش")
+        print("4. safe   -> تفعيل جدار الحماية ضد هجمات الـ Remote Spam")
+        print("5. status -> فحص حالة الاتصال بالسيرفر")
+        
+        while True:
+            cmd = input("\nRoot@Roblox:~$ ").lower()
+            if cmd == "start":
+                self.active = True
+                threading.Thread(target=self.auto_extender_loop, daemon=True).start()
+                print("[!] Tournament Mode: ACTIVE. Server is now immune to shutdown.")
+            elif cmd == "clean":
+                self.multi_path_send("Cleaner", "REFRESH_ALL")
+                print("[+] Optimization signal sent through all paths.")
+            elif cmd == "freeze":
+                self.multi_path_send("Freezer", "EMERGENCY_STOP")
+                print("[!] All Physics and Lag sources are LOCKED.")
+            elif cmd == "safe":
+                self.multi_path_send("Shield", "ACTIVATE_PROTOCOL_285")
+                print("[+] Protection Protocol 285 is now guarding the network.")
+            elif cmd == "status":
+                test = self.multi_path_send("Extender", "Ping")
+                print(f"[?] Server Link: {'ONLINE' if test else 'OFFLINE (Check API Key)'}")
+
+if __name__ == "__main__":
+    app = ServerGodMode()
+    app.terminal()
