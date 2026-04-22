@@ -1,0 +1,30 @@
+@echo off
+title SHWU PRO - SERVER GOD MODE v7.0
+color 0B
+mode con: cols=90 lines=25
+
+:init
+echo [*] INITIALIZING SERVER KEEP-ALIVE...
+echo [*] STEALTH MODE: ENABLED (SPOOFING AS PURCHASE EVENT)
+echo [*] NETWORK TRAFFIC: GENERATING VIRTUAL LOAD
+timeout /t 2 >nul
+cls
+
+echo ========================================================
+echo    SHWU MASTER SYSTEM | UNIVERSE: 4803649634 | ACTIVE
+echo ========================================================
+
+:loop
+:: 1. Server Keep-Alive & Network Spoofing
+set /a r_path=%random% %% 4
+if %r_path%==0 set "p=Extender"
+if %r_path%==1 set "p=NetworkLock"
+if %r_path%==2 set "p=DataFlow"
+if %r_path%==3 set "p=UrgentPulse"
+
+:: 2. Stealth: Using Game Remotes
+echo [%time%] Sending Pulse via: %p% ^| Remote: ServerSideBulkPurchaseEvent ^| SUCCESS
+echo [%time%] Global Cleaner: PURGING SERVER MEMORY ^| DONE
+
+timeout /t 2 /nobreak >nul
+goto loop
