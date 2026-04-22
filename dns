@@ -1,0 +1,33 @@
+@echo off
+net sessions >nul 2>&1 || (echo [!] Admin Required & pause & exit)
+title TOURNAMENT_STABILITY_PRO_MAX
+color 0b
+
+:: --- [1] Network Stability Protocol ---
+netsh int tcp set global autotuninglevel=disabled
+netsh int tcp set global chimney=enabled
+netsh int tcp set global rss=enabled
+netsh int tcp set global congestionprovider=ctcp
+netsh interface ipv4 set subinterface "Wi-Fi" mtu=1450 store=persistent
+netsh interface ipv4 set subinterface "Ethernet" mtu=1450 store=persistent
+
+:: --- [2] DNS & Persistent Config ---
+netsh interface ip set dns name="Wi-Fi" static 1.1.1.1
+netsh interface ip add dns name="Wi-Fi" 8.8.4.4 index=2
+ipconfig /flushdns >nul
+netsh winsock reset >nul
+
+:: --- [3] Anti-AFK & Fake Traffic Engine ---
+cls
+echo [ACTIVE] PROTOCOL: HTTP PERSISTENT
+echo [ACTIVE] DNS REDIRECT & UDP FORWARDING
+echo [ACTIVE] FAKE REQUESTS (INTERVAL: 1s)
+echo ---------------------------------------
+
+:loop
+:: Simulation of Fake Requests & Keep-alive
+ping 1.1.1.1 -n 1 -w 500 >nul
+powershell -Command "Invoke-WebRequest -Uri 'http://google.com' -Method Head -Headers @{'Keep-Alive'='5'}" >nul 2>&1
+echo [%time%] Request Sent: Fake Traffic [OK]
+timeout /t 1 /nobreak >nul
+goto loop
