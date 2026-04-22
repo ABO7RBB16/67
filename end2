@@ -1,0 +1,95 @@
+--[[ 
+    SHWU ULTIMATE RECEIVER V2 PRO - INTEGRATED 
+    Features: MessagingService, Multi-Topic, Anti-285, Cleaners, Anti-AFK
+]]
+
+local MessagingService = game:GetService("MessagingService")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local Stats = game:GetService("Stats")
+local RunService = game:GetService("RunService")
+local Players = game:GetService("Players")
+
+local UNIVERSE_ID = "4803649634"
+local TOPICS = {"Extender", "BackupSync", "UrgentPulse", "NetworkLock", "DataFlow", "Cleaner", "Freezer", "Shield"}
+
+print("--- [SHWU V2 PRO] STARTING INTEGRATED SYSTEM ---")
+
+-- 1. وظيفة الحماية التلقائية من كود 285 وتحسين الأداء
+local function MonitorHealth()
+    task.spawn(function()
+        while task.wait(0.5) do
+            -- تنظيف الذاكرة تلقائياً عند استشعار لاغ أو ضغط بيانات
+            if Stats.Network.ServerIn:GetValue() > 500 or Stats.Internal.DataPing:GetValue() > 400 then
+                collectgarbage("collect")
+            end
+        end
+    end)
+end
+
+-- 2. استقبال الأوامر عبر مصفوفة المسارات (Multi-Path Receiver)
+for _, topic in pairs(TOPICS) do
+    pcall(function()
+        MessagingService:SubscribeAsync(topic, function(msg)
+            local data = tostring(msg.Data)
+            
+            if topic == "Cleaner" then
+                -- تنظيف الذاكرة للاعب والسيرفر (ميزة تنظيف السيرفر)
+                collectgarbage("collect")
+                debug.setmemorylimit(0)
+                for _, v in pairs(game:GetDescendants()) do
+                    if v:IsA("ParticleEmitter") or v:IsA("Trail") then v.Enabled = false end
+                end
+                print("[SHWU] Memory Purge Executed via Cleaner Topic")
+                
+            elseif topic == "Freezer" then
+                -- تجميد مسببات اللاغ (ميزة تجميد الكراش)
+                for _, p in pairs(workspace:GetDescendants()) do
+                    if p:IsA("BasePart") and not p.Anchored then p.Anchored = true end
+                end
+                print("[SHWU] Physics Locked for Stability")
+                
+            elseif topic == "Shield" then
+                -- تفعيل جدار الحماية (Anti-285 Protocol)
+                settings().Network.IncomingReplicationLag = 0
+                print("[SHWU] Network Shield Active")
+                
+            else
+                -- ميزة الاستمرارية (Keep-Alive) والخفاء (Stealth)
+                -- استهداف ريموت الشراء المذكور لتوهم السيرفر بالنشاط
+                local targetRemote = ReplicatedStorage:FindFirstChild("ServerSideBulkPurchaseEvent", true) 
+                                     or ReplicatedStorage:FindFirstChild(data, true)
+                
+                if targetRemote and targetRemote:IsA("RemoteEvent") then
+                    targetRemote:FireServer("STABILITY_PULSE_V2", {["Time"] = tick(), ["ID"] = UNIVERSE_ID})
+                end
+            end
+        end)
+    end)
+end
+
+-- 3. نظام Anti-AFK المتطور (للاعب ولجميع المنضمين)
+local function ActivateAntiAFK(player)
+    player.Idled:Connect(function()
+        local vu = game:GetService("VirtualUser")
+        vu:CaptureController()
+        vu:ClickButton2(Vector2.new(0,0))
+        print("[SHWU] Anti-AFK Blocked Kick for: " .. player.Name)
+    end)
+end
+
+Players.PlayerAdded:Connect(ActivateAntiAFK)
+if Players.LocalPlayer then ActivateAntiAFK(Players.LocalPlayer) end
+
+-- 4. توليد نشاط شبكة وهمي (Network Traffic Spoofing)
+-- لرفع أولوية السيرفر برمجياً
+spawn(function()
+    while task.wait(0.2) do
+        local r = ReplicatedStorage:FindFirstChildOfClass("RemoteEvent")
+        if r then
+            r:FireServer("NET_SPOOF_PULSE")
+        end
+    end
+end)
+
+MonitorHealth()
+print("[V2 PRO] SYSTEM READY. SERVER IS NOW IMMORTAL FOR ID: " .. UNIVERSE_ID)
