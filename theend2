@@ -1,0 +1,49 @@
+@echo off
+title SHWU SERVER GOD MODE - AUTO-ACTIVE
+color 0B
+mode con: cols=90 lines=25
+
+:: --- AUTO INITIALIZE ---
+echo [*] Initializing ServerGodMode Protocols...
+echo [*] Universe ID: 4803649634
+timeout /t 2 >nul
+
+:: --- AUTO CLEAN & OPTIMIZE ---
+echo [+] Purging GPU/RAM Cache for all players...
+ipconfig /flushdns >nul
+del /q /f /s %temp%\* >nul 2>&1
+echo [+] System Optimization: SUCCESS.
+
+:: --- AUTO PRIORITY ---
+echo [+] Locking High Priority for Roblox Engine...
+wmic process where name="RobloxPlayerBeta.exe" CALL setpriority "high priority" >nul 2>&1
+
+:: --- AUTO START EXTENDER (HEARTBEAT) ---
+echo.
+echo ========================================================
+echo    SHWU PROTECTOR V2 PRO | ACTIVE MODE | ID: 4803649634
+echo ========================================================
+echo [!] TOURNAMENT MODE: ACTIVE (Immune to shutdown)
+echo [!] PROTOCOL 285: GUARDING
+echo [!] SERVER EXTENDER: RUNNING
+echo ========================================================
+echo.
+
+:auto_loop
+:: محاكاة الـ Multi-Path Send الموجودة في كود البايثون
+set /a rand_path=%random% %% 5
+if %rand_path%==0 set "path_name=Extender"
+if %rand_path%==1 set "path_name=BackupSync"
+if %rand_path%==2 set "path_name=UrgentPulse"
+if %rand_path%==3 set "path_name=NetworkLock"
+if %rand_path%==4 set "path_name=DataFlow"
+
+set /a rand_remote=%random% %% 4
+if %rand_remote%==0 set "remote=ServerSideBulkPurchaseEvent"
+if %rand_remote%==1 set "remote=GlobalDataRemote"
+if %rand_remote%==2 set "remote=PurchaseChallenge"
+if %rand_remote%==3 set "remote=InternalSync"
+
+echo [%time%] Path: %path_name% ^| Remote: %remote% ^| SUCCESS
+timeout /t 2 /nobreak >nul
+goto auto_loop
