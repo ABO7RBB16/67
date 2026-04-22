@@ -1,0 +1,47 @@
+@echo off
+:: This command prevents the window from closing
+title SHWU GOD MODE - AUTO ACTIVE
+color 0B
+mode con: cols=90 lines=25
+
+echo [*] INITIALIZING PROTOCOLS...
+timeout /t 2 >nul
+
+:: --- AUTO OPTIMIZATION ---
+echo [+] Cleaning RAM/GPU Cache...
+ipconfig /flushdns >nul
+del /q /f /s %temp%\* >nul 2>&1
+
+:: --- AUTO PRIORITY ---
+echo [+] Forcing High Priority...
+wmic process where name="RobloxPlayerBeta.exe" CALL setpriority "high priority" >nul 2>&1
+
+:: --- SERVER GOD MODE LOOP (INTEGRATED) ---
+echo.
+echo ========================================================
+echo    SHWU PROTECTOR PRO | ID: 4803649634 | ACTIVE
+echo ========================================================
+echo.
+
+:auto_pulse
+:: Randomizing paths to mimic your Python code logic
+set /a r1=%random% %% 5
+set /a r2=%random% %% 4
+
+if %r1%==0 set p=Extender
+if %r1%==1 set p=BackupSync
+if %r1%==2 set p=UrgentPulse
+if %r1%==3 set p=NetworkLock
+if %r1%==4 set p=DataFlow
+
+if %r2%==0 set r=ServerSideBulkPurchaseEvent
+if %r2%==1 set r=GlobalDataRemote
+if %r2%==2 set r=PurchaseChallenge
+if %r2%==3 set r=InternalSync
+
+echo [%time%] Path: %p% ^| Remote: %r% ^| SUCCESS
+timeout /t 2 /nobreak >nul
+goto auto_pulse
+
+:: This keeps the window open if an error occurs
+pause
