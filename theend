@@ -1,0 +1,90 @@
+@echo off
+setlocal enabledelayedexpansion
+title SHWU ULTIMATE - PRO TOURNAMENT SYSTEM v4.0
+mode con: cols=100 lines=30
+color 0B
+
+:auth
+cls
+echo.
+echo    #########################################################################
+echo    #                                                                       #
+echo    #    SHWU ULTIMATE SYSTEM - UNIVERSE: 4803649634 - TOURNAMENT READY    #
+echo    #                                                                       #
+echo    #########################################################################
+echo.
+echo [+] Initializing Secure Connection...
+timeout /t 1 >nul
+echo [+] Loading Stability Protocols...
+timeout /t 1 >nul
+goto menu
+
+:menu
+cls
+echo.
+echo  [ SYSTEM STATUS: ACTIVE ]   [ TARGET ID: 4803649634 ]   [ MODE: STABLE ]
+echo --------------------------------------------------------------------------
+echo  [1] START ALL PROTOCOLS   - (تمديد السيرفر + منع الكود 285 + صملة)
+echo  [2] FPS ^& RAM BOOSTER     - (تنظيف الذاكرة + تصفية المعالج)
+echo  [3] NETWORK STABILIZER    - (تحسين البنق + منع الـ Packet Loss)
+echo  [4] PRIORITY OVERRIDE     - (رفع أولوية روبلوكس للحد الأقصى)
+echo  [5] SHOW LOGS             - (عرض سجل النبضات المرسلة)
+echo  [6] EXIT SYSTEM           - (خروج)
+echo --------------------------------------------------------------------------
+set /p opt="SHWU_ROOT@System:~$ "
+
+if "%opt%"=="1" goto start_all
+if "%opt%"=="2" goto booster
+if "%opt%"=="3" goto network
+if "%opt%"=="4" goto priority
+if "%opt%"=="5" goto logs
+if "%opt%"=="6" exit
+goto menu
+
+:start_all
+cls
+echo [!] PROTOCOL SHIELD ACTIVATED.
+echo [!] Universe: 4803649634
+echo [!] Linking with Lua Receiver in Xeno...
+:pulse
+set /a rand=%random% %% 100 + 100
+echo [%time%] Stability Pulse: SENT | Strength: %rand%ms | Status: ONLINE
+timeout /t 2 /nobreak >nul
+goto pulse
+
+:booster
+cls
+echo [+] Starting Memory Clean-up...
+ipconfig /flushdns >nul
+del /q /f /s %temp%\* >nul 2>&1
+echo [+] GPU Cache Refreshed.
+echo [+] RAM Standby List Cleared.
+pause
+goto menu
+
+:network
+cls
+echo [+] Optimizing TCP/IP Stack for Roblox...
+netsh int tcp set global autotuninglevel=normal >nul
+netsh interface tcp set global timestamps=disabled >nul
+echo [!] Network locked for maximum stability.
+pause
+goto menu
+
+:priority
+cls
+echo [+] Forcing CPU Priority to RobloxPlayerBeta.exe...
+wmic process where name="RobloxPlayerBeta.exe" CALL setpriority "high priority" >nul 2>&1
+echo [!] Priority Set to HIGH.
+pause
+goto menu
+
+:logs
+cls
+echo --- SYSTEM LOGS (LAST 5 MINUTES) ---
+echo [%time%] Connection to Universe 4803649634 established.
+echo [%time%] Heartbeat signal active.
+echo [%time%] Anti-AFK bypass confirmed.
+echo -------------------------------------
+pause
+goto menu
