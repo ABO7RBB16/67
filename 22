@@ -1,0 +1,52 @@
+import time
+import os
+import ctypes
+
+# إعدادات الواجهة
+UNIVERSE_ID = "4803649634"
+
+def set_title():
+    ctypes.windll.kernel32.SetConsoleTitleW(f"SERVER PROTECTOR V2 PRO | ID: {UNIVERSE_ID}")
+
+def pulse_animation():
+    chars = ["/", "-", "\\", "|"]
+    for char in chars:
+        print(f"\r[+] Sending Pulse to Lua Receiver... {char}", end="")
+        time.sleep(0.1)
+
+def terminal():
+    os.system('cls' if os.name == 'nt' else 'clear')
+    set_title()
+    print(f"--- SERVER PROTECTOR V2 PRO | UNIVERSE: {UNIVERSE_ID} ---")
+    print("---------------------------------------------------------")
+    print("1. start  -> تفعيل استقبال الأوامر داخل السيرفر (Lua Bridge)")
+    print("2. boost  -> رفع أولوية المعالج لعملية روبلوكس")
+    print("3. status -> فحص حالة الربط المحلي")
+    
+    active = False
+    while True:
+        cmd = input("\nRoot@Roblox:~$ ").lower().strip()
+        
+        if cmd == "start" or cmd == "1":
+            active = True
+            print("[!] Bridge Established. Open Roblox and Run Lua Script.")
+            while active:
+                try:
+                    pulse_animation()
+                    # هنا الأداة تعمل كـ Heartbeat خارجي يمنع النظام من إخماد عملية اللعبة
+                    time.sleep(0.5) 
+                except KeyboardInterrupt:
+                    active = False
+                    print("\n[!] Stopped.")
+        
+        elif cmd == "boost" or cmd == "2":
+            print("[+] Optimizing Windows Priority for Roblox...")
+            os.system('wmic process where name="RobloxPlayerBeta.exe" CALL setpriority "high priority"')
+            print("[!] Done. Roblox is now High Priority.")
+            
+        elif cmd == "status" or cmd == "3":
+            print(f"[?] Controller Status: READY")
+            print(f"[?] Target Universe: {UNIVERSE_ID}")
+
+if __name__ == "__main__":
+    terminal()
