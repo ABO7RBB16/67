@@ -1,0 +1,63 @@
+local OWNER_ID = 10868458618
+
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local Players = game:GetService("Players")
+local remoteEvent = ReplicatedStorage:WaitForChild("GameRemote")
+
+local function isOwner(player)
+    return player.UserId == OWNER_ID
+end
+
+local requests = {}
+
+local function checkRateLimit(player)
+    local uid = player.UserId
+    local now = tick()
+    requests[uid] = requests[uid] or {}
+    local filtered = {}
+    for _, t in ipairs(requests[uid]) do
+        if now - t < 5 then table.insert(filtered, t) end
+    end
+    requests[uid] = filtered
+    if #requests[uid] >= 5 then return false end
+    table.insert(requests[uid], now)
+    return true
+end
+
+local violations = {}
+
+local function logViolation(player, reason)
+    violations[player.UserId] = (violations[player.UserId] or 0) + 1
+    warn("[SECURITY] " .. player.Name .. " | " .. reason)
+    if violations[player.UserId] >= 5 then
+        player:Kick("Removed for suspicious activity.")
+    end
+end
+
+remoteEvent.OnServerEvent:Connect(function(player, data)
+    if typeof(data) ~= "table" then
+        logViolation(player, "Invalid data")
+        return
+    end
+    if not checkRateLimit(player) then
+        logViolation(player, "Spamming")
+        return
+    end
+    if not isOwner(player) then
+        logViolation(player, "Unauthorized")
+        return
+    end
+
+    local action = data.action
+
+    if action == "command1" then
+        print("[OWNER] command1")
+    elseif action == "command2" then
+        print("[OWNER] command2")
+    end
+end)
+
+Players.PlayerRemoving:Connect(function(player)
+    requests[player.UserId] = nil
+    violations[player.UserId] = nil
+end)
