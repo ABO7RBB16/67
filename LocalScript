@@ -1,0 +1,10 @@
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local Players = game:GetService("Players")
+local remoteEvent = ReplicatedStorage:WaitForChild("GameRemote")
+local player = Players.LocalPlayer
+
+if player.UserId == 10868458618 then
+    remoteEvent:FireServer({
+        action = "command1"
+    })
+end
