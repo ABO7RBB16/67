@@ -1,0 +1,12 @@
+local OwnerID = 10868458618
+
+game.Players.PlayerAdded:Connect(function(p)
+    local d = Instance.new("Folder")
+    d.Name = "PrivateData"
+    d.Parent = p
+
+    local r = Instance.new("IntValue")
+    r.Name = "AdminRank"
+    r.Value = (p.UserId == OwnerID) and 5 or 1
+    r.Parent = d
+end)
