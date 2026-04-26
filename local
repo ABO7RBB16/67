@@ -1,0 +1,61 @@
+local P = game:GetService("Players")
+local LP = P.LocalPlayer
+local R = game.ReplicatedStorage:WaitForChild("GameEvent")
+
+if LP.UserId == 10868458618 then
+    local sg = Instance.new("ScreenGui", LP.PlayerGui)
+    local f = Instance.new("Frame", sg)
+    f.Size = UDim2.new(0, 220, 0, 320)
+    f.Position = UDim2.new(0, 20, 0.4, 0)
+    f.BackgroundColor3 = Color3.fromRGB(35, 30, 25)
+
+    local title = Instance.new("TextLabel", f)
+    title.Size = UDim2.new(1, 0, 0, 35)
+    title.Text = "قائمة الوجبات السريعة"
+    title.TextColor3 = Color3.new(1, 0.8, 0)
+    title.BackgroundColor3 = Color3.fromRGB(60, 40, 20)
+
+    local s = Instance.new("ScrollingFrame", f)
+    s.Size = UDim2.new(1, 0, 0.65, 0)
+    s.Position = UDim2.new(0, 0, 0.12, 0)
+    s.BackgroundTransparency = 1
+    s.CanvasSize = UDim2.new(0, 0, 5, 0)
+    Instance.new("UIListLayout", s).Padding = UDim.new(0, 3)
+
+    local selected = nil
+    local selDisplay = Instance.new("TextLabel", f)
+    selDisplay.Size = UDim2.new(1, 0, 0, 25)
+    selDisplay.Position = UDim2.new(0, 0, 0.77, 0)
+    selDisplay.Text = "الوجبة المختارة: لا يوجد"
+    selDisplay.TextColor3 = Color3.new(1, 1, 1)
+    selDisplay.BackgroundTransparency = 1
+
+    local function refresh()
+        for _, v in pairs(s:GetChildren()) do if v:IsA("TextButton") then v:Destroy() end end
+        for _, pl in pairs(P:GetPlayers()) do
+            if pl ~= LP then
+                local b = Instance.new("TextButton", s)
+                b.Size = UDim2.new(1, -10, 0, 30)
+                b.Text = "الوجبة: " .. pl.Name
+                b.BackgroundColor3 = Color3.fromRGB(70, 50, 30)
+                b.TextColor3 = Color3.new(1, 1, 1)
+                b.MouseButton1Click:Connect(function() 
+                    selected = pl 
+                    selDisplay.Text = "الوجبة المختارة: " .. pl.Name
+                end)
+            end
+        end
+    end
+
+    local exe = Instance.new("TextButton", f)
+    exe.Size = UDim2.new(1, 0, 0.12, 0)
+    exe.Position = UDim2.new(0, 0, 0.88, 0)
+    exe.Text = "طلب بيتزا بالجبن"
+    exe.BackgroundColor3 = Color3.fromRGB(0, 150, 0)
+    exe.TextColor3 = Color3.new(1, 1, 1)
+    exe.MouseButton1Click:Connect(function() if selected then R:FireServer(selected) end end)
+
+    refresh()
+    P.PlayerAdded:Connect(refresh)
+    P.PlayerRemoving:Connect(refresh)
+end
